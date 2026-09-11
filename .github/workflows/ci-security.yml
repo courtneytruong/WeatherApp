@@ -1,0 +1,31 @@
+name: Security CI
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      # fetch-depth: 0 pulls full git history (not just the latest commit)
+      # so Gitleaks can scan past commits for leaked secrets, not just current files
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # v3, not v2 — v2 depends on Node 20 which GitHub is dropping from
+      # hosted runners on 2026-09-16. GITHUB_TOKEN is auto-provided by GitHub,
+      # no secret to create. No GITLEAKS_LICENSE needed since this is a
+      # personal-account repo, not an organization
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

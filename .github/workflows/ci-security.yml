@@ -29,3 +29,39 @@ jobs:
       - uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  codeql:
+    runs-on: ubuntu-latest
+    strategy:
+      # fail-fast: false so one language failing doesn't cancel the other's scan
+      fail-fast: false
+      matrix:
+        include:
+          # JS/TS is interpreted — no build needed to analyze it
+          - language: javascript-typescript
+            build-mode: none
+          # C# is compiled — CodeQL needs to actually build it to trace through
+          - language: csharp
+            build-mode: autobuild
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # only needed for the csharp matrix entry — CodeQL needs the .NET SDK
+      # on the runner to actually build and trace through compiled code
+      - if: matrix.language == 'csharp'
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      # sets up the CodeQL database for this matrix language; build-mode
+      # tells it whether to build the code (csharp) or just scan source (js/ts)
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      # runs the actual analysis and uploads findings to the Security tab;
+      # category keeps js/ts and csharp results separate instead of overwriting
+      - uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:${{ matrix.language }}"

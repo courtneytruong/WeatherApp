@@ -1,0 +1,37 @@
+### dotenv ###
+.env
+
+### DotnetCore ###
+# .NET Core build folders
+bin/
+obj/
+
+# Common node modules locations
+/node_modules
+/wwwroot/node_modules
+
+### react ###
+.DS_*
+*.log
+logs
+**/*.backup.*
+**/*.back.*
+
+node_modules
+
+*.sublime*
+
+### Build output ###
+dist/
+
+### Visual Studio / Rider ###
+*.user
+.vs/
+.idea/
+
+### Windows ###
+Thumbs.db
+desktop.ini
+
+### .NET test output ###
+TestResults/

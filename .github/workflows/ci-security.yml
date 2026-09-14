@@ -65,3 +65,44 @@ jobs:
       - uses: github/codeql-action/analyze@v4
         with:
           category: "/language:${{ matrix.language }}"
+
+  trivy:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: weatherapp-backend
+            context: ./backend
+          - image: weatherapp-frontend
+            context: ./frontend
+    steps:
+      # needed so Docker has the Dockerfile + source to build from
+      - uses: actions/checkout@v4
+
+      # Trivy scans built images, not Dockerfiles directly, so each image
+      # has to be built locally on the runner before it can be scanned
+      - name: Build image
+        run: docker build -t ${{ matrix.image }}:scan ${{ matrix.context }}
+
+      # SHA-pinned, not tag-pinned: this action was compromised in March 2026
+      # via a tag-hijack (attacker moved old tags to malicious commits).
+      # SHA refs can't be redirected the way tags can.
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ${{ matrix.image }}:scan
+          format: sarif
+          output: trivy-results.sarif
+          # CRITICAL/HIGH only — base images like node:alpine surface dozens
+          # of low-severity findings that add noise without much value
+          severity: CRITICAL,HIGH
+
+      # reuses CodeQL's own upload action so results land in the same
+      # Security tab; category keeps backend/frontend scans separate
+      # instead of overwriting each other
+      - name: Upload Trivy results to Security tab
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: trivy-results.sarif
+          category: "trivy-${{ matrix.image }}"

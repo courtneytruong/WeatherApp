@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+.theme-sunny {
+  background-image: url("./assets/images/sunny.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-rainy {
+  background-image: url("./assets/images/rainy-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-default {
+  background: #e5e7eb;
+}

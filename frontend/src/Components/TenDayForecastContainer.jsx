@@ -1,17 +1,22 @@
+// TenDayForecastContainer.jsx
 import placeholderData from "../Utilities/placeholderData";
+import ForecastContainer from "./ForecastContainer";
 
 function TenDayForecastContainer() {
   return (
-    <div className="flex flex-col items-center justify-center bg-blue-200 text-white p-4">
-      <h2>10-Day Forecast</h2>
-      <p>
-        {placeholderData.daily.map((day, index) => (
-          <span key={index}>
-            {day.day}: High {day.high}°, Low {day.low}° - {day.condition}
-          </span>
-        ))}
-      </p>
-    </div>
+    <ForecastContainer
+      title="10-Day Forecast"
+      items={placeholderData.daily}
+      scroll
+      renderItem={(day) => (
+        <div className="flex flex-col items-center justify-center rounded-lg p-3 gap-1">
+          <span className="font-semibold">{day.day}</span>
+          <span className="text-2xl">H: {day.high}°</span>
+          <span className="text-2xl">L: {day.low}°</span>
+          <span className="text-sm">{day.condition}</span>
+        </div>
+      )}
+    />
   );
 }
 

@@ -1,17 +1,20 @@
 import placeholderData from "../Utilities/placeholderData";
+import ForecastContainer from "./ForecastContainer";
 
 function HourlyForecastContainer() {
   return (
-    <div className="flex flex-col items-center justify-center bg-blue-300 text-white p-4">
-      <h2>Hourly Forecast</h2>
-      <p>
-        {placeholderData.hourly.map((hour, index) => (
-          <span key={index}>
-            {hour.time}: {hour.temp}° {hour.condition}
-          </span>
-        ))}
-      </p>
-    </div>
+    <ForecastContainer
+      title="Hourly Forecast"
+      items={placeholderData.hourly}
+      scroll
+      renderItem={(hour) => (
+        <div className="flex flex-col items-center justify-center rounded-lg p-3 gap-1">
+          <span className="font-semibold">{hour.time}</span>
+          <span className="text-2xl">{hour.temp}°</span>
+          <span className="text-sm">{hour.condition}</span>
+        </div>
+      )}
+    />
   );
 }
 

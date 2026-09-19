@@ -1,6 +1,7 @@
 import CurrentWeatherContainer from "./CurrentWeatherContainer";
 import HourlyForecastContainer from "./HourlyForecastContainer";
 import TenDayForecastContainer from "./TenDayForecastContainer";
+import ExtraInfoContainer from "./ExtraInfoContainer";
 import SidebarContainer from "./SidebarContainer";
 
 function BodyContainer({ isSidebarOpen }) {
@@ -11,6 +12,7 @@ function BodyContainer({ isSidebarOpen }) {
         <CurrentWeatherContainer />
         <HourlyForecastContainer />
         <TenDayForecastContainer />
+        <ExtraInfoContainer />
         <SidebarContainer isSidebarOpen={isSidebarOpen} />
       </div>
     </div>

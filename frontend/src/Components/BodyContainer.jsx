@@ -3,15 +3,15 @@ import HourlyForecastContainer from "./HourlyForecastContainer";
 import TenDayForecastContainer from "./TenDayForecastContainer";
 import SidebarContainer from "./SidebarContainer";
 
-function BodyContainer() {
+function BodyContainer({ isSidebarOpen }) {
   return (
     // BodyContainer.jsx
-    <div className="flex items-center justify-center m-4">
+    <div className="flex items-center justify-center m-4 pt-10">
       <div className="flex flex-col items-center justify-center gap-4 w-full">
-        <SidebarContainer />
         <CurrentWeatherContainer />
         <HourlyForecastContainer />
         <TenDayForecastContainer />
+        <SidebarContainer isSidebarOpen={isSidebarOpen} />
       </div>
     </div>
   );

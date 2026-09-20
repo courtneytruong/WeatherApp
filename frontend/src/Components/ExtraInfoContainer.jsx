@@ -7,7 +7,7 @@ import Precipitation from "./Precipitation";
 
 function ExtraInfoContainer() {
   return (
-    <div className="flex flex-col-6 justify-between gap-4">
+    <div className="flex flex-row justify-between gap-4">
       <Humidity />
       <Precipitation />
       <UVIndex />

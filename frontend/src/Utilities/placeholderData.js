@@ -40,6 +40,35 @@ const placeholderData = {
     { day: "Tue", high: 75, low: 60, condition: "Sunny" },
     { day: "Wed", high: 70, low: 55, condition: "Rainy" },
   ],
+  alerts: [
+    {
+      event: "Winter Storm Warning",
+      severity: "Severe",
+      headline: "Winter Storm Warning in effect from 10 PM tonight to 4 PM tomorrow",
+      description:
+        "Heavy snow expected. Total snow accumulations of 8 to 12 inches. Travel could be very difficult, especially during the Monday morning commute.",
+      effective: "2026-09-20T22:00:00",
+      expires: "2026-09-21T16:00:00",
+    },
+    {
+      event: "Flood Watch",
+      severity: "Moderate",
+      headline: "Flood Watch in effect through Monday evening",
+      description:
+        "Excessive rainfall may result in flooding of rivers, creeks, streams, and other low-lying and flood-prone areas.",
+      effective: "2026-09-20T06:00:00",
+      expires: "2026-09-22T18:00:00",
+    },
+    {
+      event: "Heat Advisory",
+      severity: "Minor",
+      headline: "Heat Advisory in effect from noon to 8 PM",
+      description:
+        "Heat index values up to 105 expected. Drink plenty of fluids, stay in an air-conditioned room, and avoid prolonged sun exposure.",
+      effective: "2026-09-20T12:00:00",
+      expires: "2026-09-20T20:00:00",
+    },
+  ],
   Humidity: [{ label: "Humidity", value: "62%" }],
   Precipitation: [{ label: "Precipitation", value: "0.1 in" }],
   UVIndex: [{ label: "UV Index", value: 5 }],

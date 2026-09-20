@@ -8,7 +8,7 @@ function ForecastContainer({
 }) {
   return (
     <div
-      className={`flex flex-col justify-start bg-linear-to-b from-slate-900/80 to-slate-100/20 rounded-xl text-white text-shadow-lg/50 p-4 w-full ${className}`}
+      className={`flex flex-col justify-start bg-linear-to-b from-neutral-900 to-neutral-100/20 rounded-xl text-white text-shadow-lg/50 p-4 w-full ${className}`}
     >
       <div className="flex justify-start text-lg font-semibold mb-4 border-b border-gray-400 pb-2">
         <h2>{title}</h2>

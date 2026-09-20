@@ -2,7 +2,7 @@ const placeholderData = {
   location: "Seattle, WA",
   current: {
     temp: 68,
-    condition: "Partly Cloudy",
+    condition: "Clear",
     feelsLike: 65,
     high: 72,
     low: 58,

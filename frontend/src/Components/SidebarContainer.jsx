@@ -2,7 +2,7 @@ function SidebarContainer({ isSidebarOpen }) {
   return (
     <>
       <div
-        className={`fixed right-0 top-16 bottom-0 h-full w-80 bg-linear-to-b from-slate-900/80 to-slate-100/20 p-6
+        className={`fixed right-0 top-16 bottom-0 h-full w-80 bg-linear-to-b from-neutral-900 to-neutral-100/20 p-6
       transform transition-transform duration-300 ease-in-out
       ${isSidebarOpen ? "translate-x-0" : "translate-x-full"}`}
       >

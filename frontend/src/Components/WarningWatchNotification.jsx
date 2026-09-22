@@ -8,13 +8,13 @@ import placeholderData from "../Utilities/placeholderData";
 function alertFormattingChange(severity) {
   switch (severity) {
     case "Severe":
-      return "bg-red-100 border-l-4 border-red-500 text-red-800 p-4";
+      return "bg-red-100 border-l-4 border-red-500 text-red-800 p-2";
     case "Moderate":
-      return "bg-orange-100 border-l-4 border-orange-500 text-orange-800 p-4";
+      return "bg-orange-100 border-l-4 border-orange-500 text-orange-800 p-2";
     case "Minor":
-      return "bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4";
+      return "bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-2";
     default:
-      return "bg-gray-100 border-l-4 border-gray-500 text-gray-800 p-4";
+      return "bg-gray-100 border-l-4 border-gray-500 text-gray-800 p-2";
   }
 }
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { FiChevronUp } from "react-icons/fi";
+import { FiAlertTriangle } from "react-icons/fi";
 import placeholderData from "../Utilities/placeholderData";
 
 //changes div formatting based on alert severity
@@ -41,21 +42,43 @@ function WarningWatchNotification() {
               className={alertFormattingChange(alert.severity)}
               role="alert"
             >
-              <button
-                onClick={() => toggleCollapsed(key)}
-                className="duration-300 ease-in-out text-2xl p-3"
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center justify-start gap-1 shrink-0">
+                  <FiAlertTriangle />
+                  <p className="font-bold">{alert.event}</p>
+                </div>
+                {isAlertCollapsed && (
+                  <div className="mt-1 overflow-hidden whitespace-nowrap">
+                    <p className="animate-marquee inline-block">
+                      {alert.headline} &nbsp;•&nbsp; {alert.description}
+                      &nbsp;•&nbsp; Effective:{" "}
+                      {new Date(alert.effective).toLocaleString()} &nbsp;•&nbsp;
+                      Expires: {new Date(alert.expires).toLocaleString()}
+                    </p>
+                  </div>
+                )}
+                <div>
+                  <button
+                    onClick={() => toggleCollapsed(key)}
+                    className="text-2xl p-3"
+                  >
+                    {isAlertCollapsed ? <FiChevronDown /> : <FiChevronUp />}
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+                  isAlertCollapsed ? "grid-rows-[0fr]" : "grid-rows-[1fr]"
+                }`}
               >
-                {isAlertCollapsed ? <FiChevronDown /> : <FiChevronUp />}
-              </button>
-              <p className="font-bold">{alert.event}</p>
-              {!isAlertCollapsed && (
-                <>
+                <div className="overflow-hidden">
                   <p>{alert.headline}</p>
                   <p>{alert.description}</p>
                   <p>Effective: {new Date(alert.effective).toLocaleString()}</p>
                   <p>Expires: {new Date(alert.expires).toLocaleString()}</p>
-                </>
-              )}
+                </div>
+              </div>
             </div>
           );
         })}

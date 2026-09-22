@@ -1,1 +1,61 @@
 @import "tailwindcss";
+
+.theme-clear {
+  background-image: url("./assets/images/clear.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-rain {
+  background-image: url("./assets/images/rain.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-drizzle {
+  background-image: url("./assets/images/drizzle.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-fog {
+  background-image: url("./assets/images/fog.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-snow {
+  background-image: url("./assets/images/snow.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-thunderstorm {
+  background-image: url("./assets/images/thunderstorm.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-overcast-cloudy {
+  background-image: url("./assets/images/overcast-cloudy.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-partly-cloudy {
+  background-image: url("./assets/images/partly-cloudy.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-default {
+  background: #e5e7eb;
+}

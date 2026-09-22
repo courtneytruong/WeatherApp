@@ -44,7 +44,8 @@ const placeholderData = {
     {
       event: "Winter Storm Warning",
       severity: "Severe",
-      headline: "Winter Storm Warning in effect from 10 PM tonight to 4 PM tomorrow",
+      headline:
+        "Winter Storm Warning in effect from 10 PM tonight to 4 PM tomorrow",
       description:
         "Heavy snow expected. Total snow accumulations of 8 to 12 inches. Travel could be very difficult, especially during the Monday morning commute.",
       effective: "2026-09-20T22:00:00",

@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+@theme {
+  --animate-marquee: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
 .theme-clear {
   background-image: url("./assets/images/clear.jpg");
   background-size: cover;

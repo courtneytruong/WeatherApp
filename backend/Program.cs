@@ -13,6 +13,6 @@ var app = builder.Build();
 
 // ---- 2. map endpoints (after Build) ----
 app.MapGet("/api/weather", async (double lat, double lon, OpenMeteoClient client, CancellationToken ct) =>
-    await client.GetCurrentForecastAsync(lat, lon, ct));
+    await client.GetForecastAsync(lat, lon, ct));
 
 app.Run();

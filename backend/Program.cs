@@ -9,10 +9,13 @@ builder.Services.AddHttpClient<OpenMeteoClient>(c =>
     c.Timeout = TimeSpan.FromSeconds(10);
 });
 
+builder.Services.AddScoped<WeatherService>();
+
+
 var app = builder.Build();
 
 // ---- 2. map endpoints (after Build) ----
-app.MapGet("/api/weather", async (double lat, double lon, OpenMeteoClient client, CancellationToken ct) =>
-    await client.GetForecastAsync(lat, lon, ct));
+app.MapGet("/api/weather", async (double lat, double lon, WeatherService weather, CancellationToken ct) =>
+    await weather.GetWeatherAsync(lat, lon, ct));
 
 app.Run();

@@ -7,6 +7,8 @@ import placeholderData from "../Utilities/placeholderData";
 //changes div formatting based on alert severity
 function alertFormattingChange(severity) {
   switch (severity) {
+    case "Extreme":
+      return "bg-purple-100 border-l-4 border-purple-500 text-purple-800 p-2";
     case "Severe":
       return "bg-red-100 border-l-4 border-red-500 text-red-800 p-2";
     case "Moderate":

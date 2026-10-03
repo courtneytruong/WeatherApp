@@ -1,10 +1,8 @@
-// TenDayForecastContainer.jsx
-import placeholderData from "../Utilities/placeholderData";
 import ForecastContainer from "./ForecastContainer";
 import conditionIcons from "../Utilities/conditionIcons";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
-function TenDayForecastContainer() {
+function TenDayForecastContainer({ dailyForecast }) {
   return (
     <ForecastContainer
       title={
@@ -12,7 +10,7 @@ function TenDayForecastContainer() {
           <FaRegCalendarAlt /> 10-Day Forecast
         </div>
       }
-      items={placeholderData.daily}
+      items={dailyForecast}
       scroll
       renderItem={(day) => (
         <div className="flex flex-col items-center justify-center rounded-lg p-3 gap-1">

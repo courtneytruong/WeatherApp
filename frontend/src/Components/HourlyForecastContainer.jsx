@@ -1,9 +1,8 @@
-import placeholderData from "../Utilities/placeholderData";
 import ForecastContainer from "./ForecastContainer";
 import conditionIcons from "../Utilities/conditionIcons.jsx";
 import { FaRegClock } from "react-icons/fa";
 
-function HourlyForecastContainer() {
+function HourlyForecastContainer({ hourlyForecast }) {
   return (
     <ForecastContainer
       title={
@@ -11,7 +10,7 @@ function HourlyForecastContainer() {
           <FaRegClock /> Hourly Forecast
         </div>
       }
-      items={placeholderData.hourly}
+      items={hourlyForecast}
       scroll
       renderItem={(hour) => (
         <div className="flex flex-col items-center justify-center rounded-lg p-3 gap-1">

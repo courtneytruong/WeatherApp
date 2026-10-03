@@ -18,7 +18,14 @@ function App() {
       />
 
       <div className={`${backgroundClass} flex-1 min-w-0`}>
-        <BodyContainer isSidebarOpen={isSidebarOpen} />
+        <BodyContainer
+          isSidebarOpen={isSidebarOpen}
+          location={placeholderData.location}
+          currentWeather={placeholderData.current}
+          hourlyForecast={placeholderData.hourly}
+          dailyForecast={placeholderData.daily}
+          alerts={placeholderData.alerts}
+        />
       </div>
     </div>
   );

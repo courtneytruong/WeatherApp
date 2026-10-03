@@ -4,6 +4,7 @@ import BodyContainer from "./Components/BodyContainer";
 import TopNavBar from "./Components/TopNavBar";
 import { useState, useEffect } from "react";
 import changeBackground from "./Utilities/changeBackground";
+import getPosition from "./Utilities/getPosition";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -11,13 +12,25 @@ function App() {
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [location, setLocation] = useState("Seattle, WA"); // default location`
 
   useEffect(() => {
     async function loadData() {
       try {
-        const lat = 47.6; // hardcoded until step 4
-        const lon = -122.3;
-
+        let lat, lon, label;
+        try {
+          // await getPosition(), use its coords, label = "Current Location"
+          const position = await getPosition();
+          lat = position.coords.latitude;
+          lon = position.coords.longitude;
+          label = "Current Location";
+        } catch {
+          // fall back to Seattle coords, label = "Seattle, WA"
+          lat = 47.6;
+          lon = -122.3;
+          label = "Seattle, WA";
+        }
+        setLocation(label);
         const [weatherRes, alertsRes] = await Promise.all([
           fetch(`/api/weather?lat=${lat}&lon=${lon}`),
           fetch(`/api/alerts?lat=${lat}&lon=${lon}`),
@@ -67,7 +80,7 @@ function App() {
       <div className={`${backgroundClass} flex-1 min-w-0`}>
         <BodyContainer
           isSidebarOpen={isSidebarOpen}
-          location={"Seattle, WA"} // hardcoded until step 4
+          location={location}
           currentWeather={weather.current}
           hourlyForecast={weather.hourly}
           dailyForecast={weather.daily}

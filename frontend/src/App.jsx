@@ -30,10 +30,10 @@ function App() {
           lon = -122.3;
           label = "Seattle, WA";
         }
-        setLocation(label);
-        const [weatherRes, alertsRes] = await Promise.all([
+        const [weatherRes, alertsRes, locationRes] = await Promise.all([
           fetch(`/api/weather?lat=${lat}&lon=${lon}`),
           fetch(`/api/alerts?lat=${lat}&lon=${lon}`),
+          fetch(`/api/location?lat=${lat}&lon=${lon}`),
         ]);
 
         if (!weatherRes.ok || !alertsRes.ok) {
@@ -49,6 +49,11 @@ function App() {
 
         setWeather(weatherData);
         setAlerts(alertsData);
+        if (locationRes.ok && label === "Current Location") {
+          const locationData = await locationRes.json();
+          label = `${locationData.city}, ${locationData.state}`;
+        }
+        setLocation(label);
       } catch (err) {
         setError(err);
       } finally {

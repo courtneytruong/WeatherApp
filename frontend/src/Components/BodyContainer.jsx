@@ -5,15 +5,25 @@ import ExtraInfoContainer from "./ExtraInfoContainer";
 import SidebarContainer from "./SidebarContainer";
 import WarningWatchNotification from "./WarningWatchNotification";
 
-function BodyContainer({ isSidebarOpen }) {
+function BodyContainer({
+  isSidebarOpen,
+  location,
+  currentWeather,
+  hourlyForecast,
+  dailyForecast,
+  alerts,
+}) {
   return (
     // BodyContainer.jsx
     <div className="flex items-center justify-center m-4 pt-10">
       <div className="flex flex-col items-center justify-center gap-4 w-full">
-        <WarningWatchNotification />
-        <CurrentWeatherContainer />
-        <HourlyForecastContainer />
-        <TenDayForecastContainer />
+        <WarningWatchNotification alerts={alerts} />
+        <CurrentWeatherContainer
+          currentWeather={currentWeather}
+          location={location}
+        />
+        <HourlyForecastContainer hourlyForecast={hourlyForecast} />
+        <TenDayForecastContainer dailyForecast={dailyForecast} />
         <ExtraInfoContainer />
         <SidebarContainer isSidebarOpen={isSidebarOpen} />
       </div>

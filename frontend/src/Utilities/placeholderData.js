@@ -70,6 +70,16 @@ const placeholderData = {
       effective: "2026-09-20T12:00:00",
       expires: "2026-09-20T20:00:00",
     },
+    {
+      event: "Winter Storm Warning",
+      severity: "Extreme",
+      headline:
+        "Winter Storm Warning in effect from 10 PM tonight to 4 PM tomorrow",
+      description:
+        "Heavy snow expected. Total snow accumulations of 8 to 12 inches. Travel could be very difficult, especially during the Monday morning commute.",
+      effective: "2026-09-20T22:00:00",
+      expires: "2026-09-21T16:00:00",
+    },
   ],
   Humidity: [{ label: "Humidity", value: "89%", dewPoint: "65°" }],
   Precipitation: [{ label: "Precipitation", value: "0.1 in" }],

@@ -22,6 +22,9 @@ builder.Services.AddScoped<WeatherService>();
 
 builder.Services.AddScoped<AlertService>();
 
+builder.Services.AddScoped<LocationService>();
+
+
 
 var app = builder.Build();
 
@@ -31,5 +34,12 @@ app.MapGet("/api/weather", async (double lat, double lon, WeatherService weather
 
 app.MapGet("/api/alerts", async (double lat, double lon, AlertService alerts, CancellationToken ct) =>
     await alerts.GetActiveAlertsAsync(lat, lon, ct));
+
+app.MapGet("/api/location", async (double lat, double lon, LocationService locations, CancellationToken ct) =>
+{
+    var location = await locations.GetLocationAsync(lat, lon, ct);
+    return location is null ? Results.NotFound() : Results.Ok(location);
+});
+
 
 app.Run();

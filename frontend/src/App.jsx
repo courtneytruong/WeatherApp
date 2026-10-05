@@ -12,7 +12,7 @@ function App() {
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [location, setLocation] = useState("Seattle, WA"); // default location`
+  const [location, setLocation] = useState("Seattle, WA");
 
   useEffect(() => {
     async function loadData() {

@@ -84,5 +84,8 @@
 }
 
 .theme-default {
-  background: #e5e7eb;
+  background-image: url("./assets/images/clear.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

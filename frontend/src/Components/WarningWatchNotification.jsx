@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FiChevronDown } from "react-icons/fi";
 import { FiChevronUp } from "react-icons/fi";
 import { FiAlertTriangle } from "react-icons/fi";
+import formatAlertTime from "../Utilities/formatAlertTime.js";
 
 //changes div formatting based on alert severity
 function alertFormattingChange(severity) {
@@ -33,7 +34,7 @@ function WarningWatchNotification({ alerts }) {
   return (
     <div className="flex w-full flex-col gap-1">
       {alerts.map((alert) => {
-        const key = `${alert.event}-${alert.effective}`;
+        const key = alert.id;
         const isAlertCollapsed = isCollapsed.has(key);
 
         return (
@@ -51,9 +52,9 @@ function WarningWatchNotification({ alerts }) {
                 <div className="mt-1 overflow-hidden whitespace-nowrap">
                   <p className="animate-marquee inline-block">
                     {alert.headline} &nbsp;•&nbsp; {alert.description}
-                    &nbsp;•&nbsp; Effective:{" "}
-                    {new Date(alert.effective).toLocaleString()} &nbsp;•&nbsp;
-                    Expires: {new Date(alert.expires).toLocaleString()}
+                    &nbsp;•&nbsp; Starts:{" "}
+                    {formatAlertTime(alert.onset, "Ongoing")} &nbsp;•&nbsp;
+                    Ends: {formatAlertTime(alert.ends, "Until further notice")}
                   </p>
                 </div>
               )}
@@ -74,9 +75,11 @@ function WarningWatchNotification({ alerts }) {
             >
               <div className="overflow-hidden">
                 <p>{alert.headline}</p>
-                <p>{alert.description}</p>
-                <p>Effective: {new Date(alert.effective).toLocaleString()}</p>
-                <p>Expires: {new Date(alert.expires).toLocaleString()}</p>
+                <p className="whitespace-pre-line">{alert.description}</p>
+                <p>Starts: {formatAlertTime(alert.onset, "Ongoing")}</p>
+                <p>
+                  Ends: {formatAlertTime(alert.ends, "Until further notice")}
+                </p>
               </div>
             </div>
           </div>

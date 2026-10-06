@@ -69,6 +69,20 @@
   background-repeat: no-repeat;
 }
 
+.theme-freezing-rain {
+  background-image: url("./assets/images/freezing-rain.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.theme-showers {
+  background-image: url("./assets/images/showers.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .theme-default {
   background: #e5e7eb;
 }

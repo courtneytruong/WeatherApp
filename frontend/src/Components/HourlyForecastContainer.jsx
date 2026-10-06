@@ -1,5 +1,6 @@
 import ForecastContainer from "./ForecastContainer";
 import conditionIcons from "../Utilities/conditionIcons.jsx";
+import formatHour from "../Utilities/formatHour.js";
 import { FaRegClock } from "react-icons/fa";
 
 function HourlyForecastContainer({ hourlyForecast }) {
@@ -14,7 +15,7 @@ function HourlyForecastContainer({ hourlyForecast }) {
       scroll
       renderItem={(hour) => (
         <div className="flex flex-col items-center justify-center rounded-lg p-3 gap-1">
-          <span className="font-semibold">{hour.time}</span>
+          <span className="font-semibold">{formatHour(hour.time)}</span>
           <span className="text-2xl">{hour.temp}°</span>
           <span className="flex row  items-center text-sm gap-2">
             {conditionIcons(hour.condition)}

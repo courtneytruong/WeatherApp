@@ -6,6 +6,8 @@ import { IoSnowOutline } from "react-icons/io5";
 import { IoThunderstormOutline } from "react-icons/io5";
 import { IoCloudyOutline } from "react-icons/io5";
 import { WiDayCloudy } from "react-icons/wi";
+import { BsCloudSleet } from "react-icons/bs";
+import { LiaCloudShowersHeavySolid } from "react-icons/lia";
 
 //logic for changing the icon for weather condition
 
@@ -27,6 +29,10 @@ function conditionIcons(condition) {
       return <IoCloudyOutline />;
     case "Partly Cloudy":
       return <WiDayCloudy />;
+    case "Freezing Rain":
+      return <BsCloudSleet />;
+    case "Showers":
+      return <LiaCloudShowersHeavySolid />;
     default:
       return <IoCloudyOutline />;
   }

@@ -1,5 +1,6 @@
 import ForecastContainer from "./ForecastContainer";
 import conditionIcons from "../Utilities/conditionIcons";
+import formatDate from "../Utilities/formatDate";
 import { FaRegCalendarAlt } from "react-icons/fa";
 
 function TenDayForecastContainer({ dailyForecast }) {
@@ -14,7 +15,7 @@ function TenDayForecastContainer({ dailyForecast }) {
       scroll
       renderItem={(day) => (
         <div className="flex flex-col items-center justify-center rounded-lg p-3 gap-1">
-          <span className="font-semibold">{day.day}</span>
+          <span className="font-semibold">{formatDate(day.date)}</span>
           <span className="text-2xl">H: {day.high}°</span>
           <span className="text-2xl">L: {day.low}°</span>
           <span className="flex flex-row items-center justify-center gap-2 text-sm">

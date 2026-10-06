@@ -36,19 +36,23 @@ function App() {
           fetch(`/api/location?lat=${lat}&lon=${lon}`),
         ]);
 
-        if (!weatherRes.ok || !alertsRes.ok) {
+        if (!weatherRes.ok) {
           throw new Error(
             "Failed to load weather data" +
               ". " +
-              `Weather: ${weatherRes.status} ${weatherRes.statusText}, Alerts: ${alertsRes.status} ${alertsRes.statusText}`,
+              `Weather: ${weatherRes.status} ${weatherRes.statusText}`,
           );
         }
 
         const weatherData = await weatherRes.json();
-        const alertsData = await alertsRes.json();
 
         setWeather(weatherData);
-        setAlerts(alertsData);
+
+        if (alertsRes.ok) {
+          const alertsData = await alertsRes.json();
+          setAlerts(alertsData);
+        }
+
         if (locationRes.ok && label === "Current Location") {
           const locationData = await locationRes.json();
           label = `${locationData.city}, ${locationData.state}`;

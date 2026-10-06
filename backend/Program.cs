@@ -1,4 +1,5 @@
 using WeatherApp.Api.Services;
+using WeatherApp.Api.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ builder.Services.AddHttpClient<OpenMeteoClient>(c =>
 {
     c.BaseAddress = new Uri("https://api.open-meteo.com/");
     c.Timeout = TimeSpan.FromSeconds(10);
+
 });
 
 builder.Services.AddHttpClient<NwsClient>(c =>
@@ -24,11 +26,16 @@ builder.Services.AddScoped<AlertService>();
 
 builder.Services.AddScoped<LocationService>();
 
+builder.Services.AddProblemDetails();
 
+builder.Services.AddExceptionHandler<UpstreamExceptionHandler>();
 
 var app = builder.Build();
 
-// ---- 2. map endpoints (after Build) ----
+// ---- 2. configure middleware (after Build) ----
+app.UseExceptionHandler();
+
+// ---- 3. map endpoints (after Build) ----
 app.MapGet("/api/weather", async (double lat, double lon, WeatherService weather, CancellationToken ct) =>
     await weather.GetWeatherAsync(lat, lon, ct));
 

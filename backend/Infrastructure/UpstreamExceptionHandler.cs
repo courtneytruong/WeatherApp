@@ -18,7 +18,7 @@ public class UpstreamExceptionHandler(
         }
 
         // Only handle upstream failures; anything else is "not mine"
-        if (exception is not (HttpRequestException or JsonException or OperationCanceledException))
+        if (exception is not (HttpRequestException or JsonException or OperationCanceledException or UpstreamDataException))
         {
             return false;
         }

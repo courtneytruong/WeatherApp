@@ -1,14 +1,19 @@
+using WeatherApp.Api.Infrastructure;
 using WeatherApp.Api.Models;
+
 
 namespace WeatherApp.Api.Services;
 
 public class WeatherService(OpenMeteoClient openMeteo)
 {
-    public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon, CancellationToken ct = default)
+    public async Task<WeatherResponse> GetWeatherAsync(double lat, double lon, CancellationToken ct = default)
     {
         var forecast = await openMeteo.GetForecastAsync(lat, lon, ct);
 
-        if (forecast is null) return null;
+        if (forecast is null || forecast.Daily.Time.Count == 0)
+        {
+            throw new UpstreamDataException("OpenMeteo returned no forecast data");
+        }
 
         var hourly = Enumerable.Range(0, forecast.Hourly.Time.Count)
             .Select(i => new HourlyForecast(

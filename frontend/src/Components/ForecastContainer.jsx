@@ -5,6 +5,7 @@ function ForecastContainer({
   renderItem,
   className = "",
   scroll = false,
+  children,
 }) {
   return (
     <div
@@ -20,11 +21,12 @@ function ForecastContainer({
             : "flex-wrap justify-center "
         }`}
       >
-        {items.map((item, index) => (
-          <div key={index} className={scroll ? "flex-shrink-0" : ""}>
-            {renderItem(item)}
-          </div>
-        ))}
+        {children ??
+          items.map((item, index) => (
+            <div key={index} className={scroll ? "flex-shrink-0" : ""}>
+              {renderItem(item)}
+            </div>
+          ))}
       </div>
     </div>
   );

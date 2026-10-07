@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import changeBackground from "./Utilities/changeBackground";
 import getPosition from "./Utilities/getPosition";
 import LoadingScreen from "./Components/LoadingScreen";
+import ErrorScreen from "./Components/ErrorScreen";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -73,10 +74,6 @@ function App() {
     loadData();
   }, []);
 
-  if (error) {
-    return <div>{error.message}</div>;
-  }
-
   const backgroundClass = weather
     ? changeBackground(weather.current.condition)
     : "theme-default";
@@ -91,6 +88,8 @@ function App() {
       <div className={`${backgroundClass} flex-1 min-w-0`}>
         {isLoading ? (
           <LoadingScreen message={loadingMessage} />
+        ) : error ? (
+          <ErrorScreen message={error.message} />
         ) : (
           <BodyContainer
             isSidebarOpen={isSidebarOpen}

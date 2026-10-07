@@ -89,7 +89,10 @@ function App() {
         {isLoading ? (
           <LoadingScreen message={loadingMessage} />
         ) : error ? (
-          <ErrorScreen message={error.message} />
+          <ErrorScreen
+            message={error.message}
+            onRetry={() => window.location.reload()}
+          />
         ) : (
           <BodyContainer
             isSidebarOpen={isSidebarOpen}

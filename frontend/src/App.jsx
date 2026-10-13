@@ -5,6 +5,8 @@ import TopNavBar from "./Components/TopNavBar";
 import { useState, useEffect } from "react";
 import changeBackground from "./Utilities/changeBackground";
 import getPosition from "./Utilities/getPosition";
+import LoadingScreen from "./Components/LoadingScreen";
+import ErrorScreen from "./Components/ErrorScreen";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,6 +15,9 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [location, setLocation] = useState("Seattle, WA");
+  const [loadingMessage, setLoadingMessage] = useState(
+    "Finding your location…",
+  );
 
   useEffect(() => {
     async function loadData() {
@@ -30,6 +35,7 @@ function App() {
           lon = -122.3;
           label = "Seattle, WA";
         }
+        setLoadingMessage("Loading weather…");
         const [weatherRes, alertsRes, locationRes] = await Promise.all([
           fetch(`/api/weather?lat=${lat}&lon=${lon}`),
           fetch(`/api/alerts?lat=${lat}&lon=${lon}`),
@@ -68,16 +74,9 @@ function App() {
     loadData();
   }, []);
 
-  if (isLoading) {
-    return <div>Weather Data is Loading...</div>;
-  }
-
-  if (error) {
-    return <div>{error.message}</div>;
-  }
-
-  // weather is guaranteed non-null from here down
-  const backgroundClass = changeBackground(weather.current.condition);
+  const backgroundClass = weather
+    ? changeBackground(weather.current.condition)
+    : "theme-default";
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-blue-100 flex flex-col">
@@ -87,14 +86,23 @@ function App() {
       />
 
       <div className={`${backgroundClass} flex-1 min-w-0`}>
-        <BodyContainer
-          isSidebarOpen={isSidebarOpen}
-          location={location}
-          currentWeather={weather.current}
-          hourlyForecast={weather.hourly}
-          dailyForecast={weather.daily}
-          alerts={alerts}
-        />
+        {isLoading ? (
+          <LoadingScreen message={loadingMessage} />
+        ) : error ? (
+          <ErrorScreen
+            message={error.message}
+            onRetry={() => window.location.reload()}
+          />
+        ) : (
+          <BodyContainer
+            isSidebarOpen={isSidebarOpen}
+            location={location}
+            currentWeather={weather.current}
+            hourlyForecast={weather.hourly}
+            dailyForecast={weather.daily}
+            alerts={alerts}
+          />
+        )}
       </div>
     </div>
   );

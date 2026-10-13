@@ -34,9 +34,18 @@ public class WeatherService(OpenMeteoClient openMeteo)
             Round(forecast.Current.ApparentTemperature),
             Round(forecast.Daily.HighTemp[0]),
             Round(forecast.Daily.LowTemp[0]),
-            WeatherCodeMapper.ToCondition(forecast.Current.WeatherCode)
+            WeatherCodeMapper.ToCondition(forecast.Current.WeatherCode));
+
+        var details = new WeatherDetails(
+            forecast.Current.RelativeHumidity,
+            forecast.Daily.PrecipitationSum[0],
+            Round(forecast.Current.UVIndex),
+            Round(forecast.Current.Visibility / 5280), // convert feet to miles
+            Round(forecast.Current.DewPoint),
+            forecast.Daily.Sunrise[0],
+            forecast.Daily.Sunset[0]
         );
-        return new WeatherResponse(current, hourly, daily);
+        return new WeatherResponse(current, details, hourly, daily);
     }
     private static int Round(double value) => (int)Math.Round(value, MidpointRounding.AwayFromZero);
 

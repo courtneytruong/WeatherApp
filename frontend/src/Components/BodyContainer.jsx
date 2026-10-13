@@ -24,7 +24,7 @@ function BodyContainer({
         />
         <HourlyForecastContainer hourlyForecast={hourlyForecast} />
         <TenDayForecastContainer dailyForecast={dailyForecast} />
-        <ExtraInfoContainer />
+        <ExtraInfoContainer currentWeather={currentWeather} />
         <SidebarContainer isSidebarOpen={isSidebarOpen} />
       </div>
     </div>

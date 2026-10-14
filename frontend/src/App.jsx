@@ -100,6 +100,7 @@ function App() {
             currentWeather={weather.current}
             hourlyForecast={weather.hourly}
             dailyForecast={weather.daily}
+            details={weather.details}
             alerts={alerts}
           />
         )}

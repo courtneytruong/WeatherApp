@@ -12,6 +12,7 @@ function BodyContainer({
   hourlyForecast,
   dailyForecast,
   alerts,
+  details,
 }) {
   return (
     // BodyContainer.jsx
@@ -24,7 +25,7 @@ function BodyContainer({
         />
         <HourlyForecastContainer hourlyForecast={hourlyForecast} />
         <TenDayForecastContainer dailyForecast={dailyForecast} />
-        <ExtraInfoContainer />
+        <ExtraInfoContainer currentWeather={currentWeather} details={details} />
         <SidebarContainer isSidebarOpen={isSidebarOpen} />
       </div>
     </div>

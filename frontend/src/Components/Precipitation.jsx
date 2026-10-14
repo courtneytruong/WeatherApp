@@ -1,15 +1,19 @@
 import ForecastContainer from "./ForecastContainer";
-import placeholderData from "../Utilities/placeholderData";
+import { IoRainyOutline } from "react-icons/io5";
 
-function Precipitation() {
+function Precipitation({ details }) {
   return (
     <ForecastContainer
-      title="Precipitation"
-      items={placeholderData.Precipitation}
+      title={
+        <div className="flex flex-row items-center gap-2">
+          <IoRainyOutline /> Precipitation
+        </div>
+      }
+      items={[details]}
       renderItem={(item) => (
-        <div className="flex items-center justify-between">
-          <span>{item.label}</span>
-          <span>{item.value}</span>
+        <div className="flex flex-col gap-2 items-center justify-between">
+          <div className="text-sm font-semibold">Total Precipitation:</div>
+          <div className="text-4xl">{item.precipitationToday} in</div>
         </div>
       )}
     />

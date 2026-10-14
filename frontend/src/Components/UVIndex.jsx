@@ -1,15 +1,37 @@
 import ForecastContainer from "./ForecastContainer";
-import placeholderData from "../Utilities/placeholderData";
+import { TbUvIndex } from "react-icons/tb";
 
-function UVIndex() {
+function uvIndexLabel(uvIndex) {
+  if (uvIndex <= 2) {
+    return "Low";
+  }
+  if (uvIndex <= 5) {
+    return "Moderate";
+  }
+  if (uvIndex <= 7) {
+    return "High";
+  }
+  if (uvIndex <= 10) {
+    return "Very High";
+  }
+  return "Extreme";
+}
+
+function UVIndex({ details }) {
   return (
     <ForecastContainer
-      title="UV Index"
-      items={placeholderData.UVIndex}
+      title={
+        <div className="flex flex-row items-center gap-2">
+          <TbUvIndex /> UV Index
+        </div>
+      }
+      items={[details]}
       renderItem={(item) => (
-        <div className="flex items-center justify-between">
-          <span>{item.label}</span>
-          <span>{item.value}</span>
+        <div className="flex flex-col gap-2 items-center justify-between">
+          <div className="text-4xl">{item.uvIndex}</div>
+          <div className="text-lg font-semibold">
+            {uvIndexLabel(item.uvIndex)}
+          </div>
         </div>
       )}
     />

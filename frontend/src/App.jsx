@@ -59,6 +59,13 @@ function App() {
     }
   }
 
+  function handleSelectLocation(result) {
+    const label = result.state
+      ? `${result.name}, ${result.state}`
+      : result.name;
+    loadWeather(result.lat, result.lon, label);
+  }
+
   useEffect(() => {
     async function init() {
       let lat, lon, label;
@@ -88,6 +95,7 @@ function App() {
       <TopNavBar
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
+        onSelectLocation={handleSelectLocation}
       />
 
       <div className={`${backgroundClass} flex-1 min-w-0`}>

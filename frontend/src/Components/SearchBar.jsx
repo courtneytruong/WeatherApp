@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-function SearchBar() {
+function SearchBar({ onSelectLocation }) {
   const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -16,7 +17,13 @@ function SearchBar() {
     }
 
     const results = await res.json();
-    console.log(results);
+    setSearchResults(results);
+  }
+
+  function handleSelect(result) {
+    onSelectLocation(result);
+    setSearchResults([]);
+    setQuery("");
   }
 
   return (
@@ -26,9 +33,24 @@ function SearchBar() {
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search for a city..."
+        placeholder="Search by city or zip code"
         className="w-full bg-neutral-900 text-white placeholder:text-neutral-400 border border-slate-600 focus:outline-none focus:ring-1 focus:ring-white p-2 pl-11 rounded-xl"
       />
+      {searchResults.length > 0 && (
+        <ul className="absolute top-full left-0 right-0 mt-1 bg-neutral-900 border border-slate-600 rounded-xl overflow-hidden">
+          {searchResults.map((result) => (
+            <li key={`${result.lat},${result.lon}`}>
+              <button
+                type="button"
+                onClick={() => handleSelect(result)}
+                className="w-full text-left p-2 hover:bg-neutral-700"
+              >
+                {result.state ? `${result.name}, ${result.state}` : result.name}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </form>
   );
 }

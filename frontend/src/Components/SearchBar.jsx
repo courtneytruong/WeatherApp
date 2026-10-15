@@ -1,23 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
 
 function SearchBar({ onSelectLocation }) {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const cleaned = query.split(",")[0].trim();
-    if (!cleaned) {
-      return;
+  useEffect(() => {
+    const controller = new AbortController();
+    async function search() {
+      const cleaned = query.split(",")[0].trim();
+      if (cleaned.length < 3) {
+        setSearchResults([]);
+        return;
+      }
+      try {
+        const res = await fetch(
+          `/api/search?name=${encodeURIComponent(cleaned)}`,
+          { signal: controller.signal },
+        );
+        if (!res.ok) {
+          return;
+        }
+        const results = await res.json();
+        setSearchResults(results);
+      } catch (err) {
+        if (err.name === "AbortError") {
+          return;
+        }
+        console.error(err);
+      }
     }
-    const res = await fetch(`/api/search?name=${encodeURIComponent(cleaned)}`);
-    if (!res.ok) {
-      return;
-    }
+    const timer = setTimeout(search, 300);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [query]);
 
-    const results = await res.json();
-    setSearchResults(results);
+  function handleSubmit(e) {
+    e.preventDefault();
   }
 
   function handleSelect(result) {

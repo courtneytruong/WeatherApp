@@ -2,7 +2,7 @@ import "./App.css";
 import "./index.css";
 import BodyContainer from "./Components/BodyContainer";
 import TopNavBar from "./Components/TopNavBar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import changeBackground from "./Utilities/changeBackground";
 import getPosition from "./Utilities/getPosition";
 import LoadingScreen from "./Components/LoadingScreen";
@@ -18,8 +18,10 @@ function App() {
   const [loadingMessage, setLoadingMessage] = useState(
     "Finding your location…",
   );
+  const lastRequest = useRef(null);
 
   async function loadWeather(lat, lon, label) {
+    lastRequest.current = { lat, lon, label };
     try {
       setIsLoading(true);
       setError(null);
@@ -70,13 +72,11 @@ function App() {
     async function init() {
       let lat, lon, label;
       try {
-        // await getPosition(), use its coords, label = "Current Location"
         const position = await getPosition();
         lat = position.coords.latitude;
         lon = position.coords.longitude;
         label = "Current Location";
       } catch {
-        // fall back to Seattle coords, label = "Seattle, WA"
         lat = 47.6;
         lon = -122.3;
         label = "Seattle, WA";
@@ -85,6 +85,14 @@ function App() {
     }
     init();
   }, []);
+
+  function handleRetry() {
+    loadWeather(
+      lastRequest.current.lat,
+      lastRequest.current.lon,
+      lastRequest.current.label,
+    );
+  }
 
   const backgroundClass = weather
     ? changeBackground(weather.current.condition)
@@ -102,10 +110,7 @@ function App() {
         {isLoading ? (
           <LoadingScreen message={loadingMessage} />
         ) : error ? (
-          <ErrorScreen
-            message={error.message}
-            onRetry={() => window.location.reload()}
-          />
+          <ErrorScreen message={error.message} onRetry={handleRetry} />
         ) : (
           <BodyContainer
             isSidebarOpen={isSidebarOpen}

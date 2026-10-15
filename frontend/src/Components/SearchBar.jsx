@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaSearch } from "react-icons/fa";
 
 function SearchBar({ onSelectLocation }) {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const formRef = useRef(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -37,8 +38,25 @@ function SearchBar({ onSelectLocation }) {
     };
   }, [query]);
 
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (!formRef.current.contains(e.target)) {
+        setSearchResults([]);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   function handleSubmit(e) {
     e.preventDefault();
+  }
+
+  function handleKeyDown(e) {
+    if (e.key === "Escape") {
+      setSearchResults([]);
+      setQuery("");
+    }
   }
 
   function handleSelect(result) {
@@ -48,11 +66,16 @@ function SearchBar({ onSelectLocation }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="relative flex items-center w-full">
+    <form
+      onSubmit={handleSubmit}
+      ref={formRef}
+      className="relative flex items-center w-full"
+    >
       <FaSearch className="absolute left-3 text-neutral-400 text-neutral-400 ml-2" />
       <input
         type="text"
         value={query}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search by city or zip code"
         className="w-full bg-neutral-900 text-white placeholder:text-neutral-400 border border-slate-600 focus:outline-none focus:ring-1 focus:ring-white p-2 pl-11 rounded-xl"

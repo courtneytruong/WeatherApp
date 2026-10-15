@@ -7,6 +7,7 @@ import changeBackground from "./Utilities/changeBackground";
 import getPosition from "./Utilities/getPosition";
 import LoadingScreen from "./Components/LoadingScreen";
 import ErrorScreen from "./Components/ErrorScreen";
+import abbreviateState from "./Utilities/stateAbbreviations";
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -63,7 +64,7 @@ function App() {
 
   function handleSelectLocation(result) {
     const label = result.state
-      ? `${result.name}, ${result.state}`
+      ? `${result.name}, ${abbreviateState(result.state)}`
       : result.name;
     loadWeather(result.lat, result.lon, label);
   }

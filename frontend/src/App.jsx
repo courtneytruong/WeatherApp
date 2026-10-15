@@ -19,59 +19,64 @@ function App() {
     "Finding your location…",
   );
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        let lat, lon, label;
-        try {
-          // await getPosition(), use its coords, label = "Current Location"
-          const position = await getPosition();
-          lat = position.coords.latitude;
-          lon = position.coords.longitude;
-          label = "Current Location";
-        } catch {
-          // fall back to Seattle coords, label = "Seattle, WA"
-          lat = 47.6;
-          lon = -122.3;
-          label = "Seattle, WA";
-        }
-        setLoadingMessage("Loading weather…");
-        const [weatherRes, alertsRes, locationRes] = await Promise.all([
-          fetch(`/api/weather?lat=${lat}&lon=${lon}`),
-          fetch(`/api/alerts?lat=${lat}&lon=${lon}`),
-          fetch(`/api/location?lat=${lat}&lon=${lon}`),
-        ]);
-
-        if (!weatherRes.ok) {
-          throw new Error(
-            "Failed to load weather data" +
-              ". " +
-              `Weather: ${weatherRes.status} ${weatherRes.statusText}`,
-          );
-        }
-
-        const weatherData = await weatherRes.json();
-
-        setWeather(weatherData);
-
-        if (alertsRes.ok) {
-          const alertsData = await alertsRes.json();
-          setAlerts(alertsData);
-        }
-
-        if (locationRes.ok && label === "Current Location") {
-          const locationData = await locationRes.json();
-          label = `${locationData.city}, ${locationData.state}`;
-        }
-        setLocation(label);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setIsLoading(false);
+  async function loadWeather(lat, lon, label) {
+    try {
+      setIsLoading(true);
+      setError(null);
+      setAlerts([]);
+      setLoadingMessage("Loading weather…");
+      const [weatherRes, alertsRes, locationRes] = await Promise.all([
+        fetch(`/api/weather?lat=${lat}&lon=${lon}`),
+        fetch(`/api/alerts?lat=${lat}&lon=${lon}`),
+        fetch(`/api/location?lat=${lat}&lon=${lon}`),
+      ]);
+      if (!weatherRes.ok) {
+        throw new Error(
+          "Failed to load weather data" +
+            ". " +
+            `Weather: ${weatherRes.status} ${weatherRes.statusText}`,
+        );
       }
-    }
 
-    loadData();
+      const weatherData = await weatherRes.json();
+
+      setWeather(weatherData);
+
+      if (alertsRes.ok) {
+        const alertsData = await alertsRes.json();
+        setAlerts(alertsData);
+      }
+
+      if (locationRes.ok && label === "Current Location") {
+        const locationData = await locationRes.json();
+        label = `${locationData.city}, ${locationData.state}`;
+      }
+      setLocation(label);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    async function init() {
+      let lat, lon, label;
+      try {
+        // await getPosition(), use its coords, label = "Current Location"
+        const position = await getPosition();
+        lat = position.coords.latitude;
+        lon = position.coords.longitude;
+        label = "Current Location";
+      } catch {
+        // fall back to Seattle coords, label = "Seattle, WA"
+        lat = 47.6;
+        lon = -122.3;
+        label = "Seattle, WA";
+      }
+      await loadWeather(lat, lon, label);
+    }
+    init();
   }, []);
 
   const backgroundClass = weather

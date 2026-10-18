@@ -19,6 +19,13 @@ builder.Services.AddHttpClient<NwsClient>(c =>
     c.DefaultRequestHeaders.Accept.ParseAdd("application/geo+json");
 });
 
+builder.Services.AddHttpClient<GeocodingClient>(c =>
+{
+    c.BaseAddress = new Uri("https://geocoding-api.open-meteo.com/");
+    c.Timeout = TimeSpan.FromSeconds(10);
+}
+);
+
 
 builder.Services.AddScoped<WeatherService>();
 
@@ -26,9 +33,12 @@ builder.Services.AddScoped<AlertService>();
 
 builder.Services.AddScoped<LocationService>();
 
+builder.Services.AddScoped<SearchService>();
+
 builder.Services.AddProblemDetails();
 
 builder.Services.AddExceptionHandler<UpstreamExceptionHandler>();
+
 
 var app = builder.Build();
 
@@ -48,5 +58,7 @@ app.MapGet("/api/location", async (double lat, double lon, LocationService locat
     return location is null ? Results.NotFound() : Results.Ok(location);
 });
 
+app.MapGet("/api/search", async (string name, SearchService search, CancellationToken ct) =>
+    await search.SearchAsync(name, ct));
 
 app.Run();

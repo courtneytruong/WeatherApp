@@ -22,6 +22,7 @@ function App() {
   const lastRequest = useRef(null);
 
   async function loadWeather(lat, lon, label) {
+    const needsLocationName = label === "Current Location";
     lastRequest.current = { lat, lon, label };
     try {
       setIsLoading(true);
@@ -31,7 +32,7 @@ function App() {
       const [weatherRes, alertsRes, locationRes] = await Promise.all([
         fetch(`/api/weather?lat=${lat}&lon=${lon}`),
         fetch(`/api/alerts?lat=${lat}&lon=${lon}`),
-        fetch(`/api/location?lat=${lat}&lon=${lon}`),
+        needsLocationName ? fetch(`/api/location?lat=${lat}&lon=${lon}`) : null,
       ]);
       if (!weatherRes.ok) {
         throw new Error(
@@ -50,7 +51,7 @@ function App() {
         setAlerts(alertsData);
       }
 
-      if (locationRes.ok && label === "Current Location") {
+      if (needsLocationName && locationRes.ok) {
         const locationData = await locationRes.json();
         label = `${locationData.city}, ${locationData.state}`;
       }

@@ -18,6 +18,10 @@ function changeBackground(condition) {
       return "theme-overcast-cloudy";
     case "Partly Cloudy":
       return "theme-partly-cloudy";
+    case "Freezing Rain":
+      return "theme-freezing-rain";
+    case "Showers":
+      return "theme-showers";
     default:
       return "theme-default";
   }

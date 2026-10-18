@@ -1,14 +1,19 @@
+using WeatherApp.Api.Infrastructure;
 using WeatherApp.Api.Models;
+
 
 namespace WeatherApp.Api.Services;
 
 public class WeatherService(OpenMeteoClient openMeteo)
 {
-    public async Task<WeatherResponse?> GetWeatherAsync(double lat, double lon, CancellationToken ct = default)
+    public async Task<WeatherResponse> GetWeatherAsync(double lat, double lon, CancellationToken ct = default)
     {
         var forecast = await openMeteo.GetForecastAsync(lat, lon, ct);
 
-        if (forecast is null) return null;
+        if (forecast is null || forecast.Daily.Time.Count == 0)
+        {
+            throw new UpstreamDataException("OpenMeteo returned no forecast data");
+        }
 
         var hourly = Enumerable.Range(0, forecast.Hourly.Time.Count)
             .Select(i => new HourlyForecast(
@@ -29,9 +34,18 @@ public class WeatherService(OpenMeteoClient openMeteo)
             Round(forecast.Current.ApparentTemperature),
             Round(forecast.Daily.HighTemp[0]),
             Round(forecast.Daily.LowTemp[0]),
-            WeatherCodeMapper.ToCondition(forecast.Current.WeatherCode)
+            WeatherCodeMapper.ToCondition(forecast.Current.WeatherCode));
+
+        var details = new WeatherDetails(
+            forecast.Current.RelativeHumidity,
+            forecast.Daily.PrecipitationSum[0],
+            Round(forecast.Current.UVIndex),
+            Round(forecast.Current.Visibility / 5280), // convert feet to miles
+            Round(forecast.Current.DewPoint),
+            forecast.Daily.Sunrise[0],
+            forecast.Daily.Sunset[0]
         );
-        return new WeatherResponse(current, hourly, daily);
+        return new WeatherResponse(current, details, hourly, daily);
     }
     private static int Round(double value) => (int)Math.Round(value, MidpointRounding.AwayFromZero);
 

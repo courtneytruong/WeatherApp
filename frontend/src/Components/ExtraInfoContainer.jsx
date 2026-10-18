@@ -6,15 +6,15 @@ import Moonphase from "./Moonphase";
 import Precipitation from "./Precipitation";
 import FeelsLike from "./FeelsLike";
 
-function ExtraInfoContainer() {
+function ExtraInfoContainer({ currentWeather, details }) {
   return (
     <div className="flex flex-row justify-between gap-4">
-      <FeelsLike />
-      <Humidity />
-      <Precipitation />
-      <UVIndex />
-      <Visibility />
-      <SunriseSunset />
+      <FeelsLike currentWeather={currentWeather} />
+      <Humidity details={details} />
+      <Precipitation details={details} />
+      <UVIndex details={details} />
+      <Visibility details={details} />
+      <SunriseSunset details={details} />
       <Moonphase />
     </div>
   );

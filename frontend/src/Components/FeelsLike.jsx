@@ -1,5 +1,4 @@
 import ForecastContainer from "./ForecastContainer";
-import placeholderData from "../Utilities/placeholderData";
 import { IoThermometerOutline } from "react-icons/io5";
 
 function feelsLikeText(temp, feelsLike) {
@@ -15,7 +14,7 @@ function feelsLikeText(temp, feelsLike) {
   }
 }
 
-function FeelsLike() {
+function FeelsLike({ currentWeather }) {
   return (
     <ForecastContainer
       title={
@@ -23,7 +22,7 @@ function FeelsLike() {
           <IoThermometerOutline /> Feels Like
         </div>
       }
-      items={[placeholderData.current]}
+      items={[currentWeather]}
       renderItem={(item) => (
         <div className="flex flex-col items-center justify-center gap-2">
           <span className="text-4xl">{item.feelsLike}°</span>

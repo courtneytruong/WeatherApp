@@ -1,4 +1,5 @@
 using WeatherApp.Api.Services;
+using WeatherApp.Api.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,7 @@ builder.Services.AddHttpClient<OpenMeteoClient>(c =>
 {
     c.BaseAddress = new Uri("https://api.open-meteo.com/");
     c.Timeout = TimeSpan.FromSeconds(10);
+
 });
 
 builder.Services.AddHttpClient<NwsClient>(c =>
@@ -17,19 +19,46 @@ builder.Services.AddHttpClient<NwsClient>(c =>
     c.DefaultRequestHeaders.Accept.ParseAdd("application/geo+json");
 });
 
+builder.Services.AddHttpClient<GeocodingClient>(c =>
+{
+    c.BaseAddress = new Uri("https://geocoding-api.open-meteo.com/");
+    c.Timeout = TimeSpan.FromSeconds(10);
+}
+);
+
 
 builder.Services.AddScoped<WeatherService>();
 
 builder.Services.AddScoped<AlertService>();
 
+builder.Services.AddScoped<LocationService>();
+
+builder.Services.AddScoped<SearchService>();
+
+builder.Services.AddProblemDetails();
+
+builder.Services.AddExceptionHandler<UpstreamExceptionHandler>();
+
 
 var app = builder.Build();
 
-// ---- 2. map endpoints (after Build) ----
+// ---- 2. configure middleware (after Build) ----
+app.UseExceptionHandler();
+
+// ---- 3. map endpoints (after Build) ----
 app.MapGet("/api/weather", async (double lat, double lon, WeatherService weather, CancellationToken ct) =>
     await weather.GetWeatherAsync(lat, lon, ct));
 
 app.MapGet("/api/alerts", async (double lat, double lon, AlertService alerts, CancellationToken ct) =>
     await alerts.GetActiveAlertsAsync(lat, lon, ct));
+
+app.MapGet("/api/location", async (double lat, double lon, LocationService locations, CancellationToken ct) =>
+{
+    var location = await locations.GetLocationAsync(lat, lon, ct);
+    return location is null ? Results.NotFound() : Results.Ok(location);
+});
+
+app.MapGet("/api/search", async (string name, SearchService search, CancellationToken ct) =>
+    await search.SearchAsync(name, ct));
 
 app.Run();

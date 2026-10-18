@@ -1,8 +1,7 @@
 import ForecastContainer from "./ForecastContainer";
-import placeholderData from "../Utilities/placeholderData";
 import { WiHumidity } from "react-icons/wi";
 
-function Humidity() {
+function Humidity({ details }) {
   return (
     <ForecastContainer
       title={
@@ -10,12 +9,12 @@ function Humidity() {
           <WiHumidity /> Humidity
         </div>
       }
-      items={placeholderData.Humidity}
+      items={[details]}
       renderItem={(item) => (
         <div className="flex flex-col items-center justify-center gap-2">
-          <span className="text-4xl">{item.value}</span>
+          <span className="text-4xl">{item.humidity}%</span>
           <span className="text-sm font-semibold">
-            The dew point is {item.dewPoint} right now
+            The dew point is {item.dewPoint}°F right now
           </span>
         </div>
       )}

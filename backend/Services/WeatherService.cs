@@ -20,7 +20,8 @@ public class WeatherService(OpenMeteoClient openMeteo)
             forecast.Hourly.Time[i],
             Round(forecast.Hourly.Temperature[i]),
             Round(forecast.Hourly.ApparentTemperature[i]),
-            WeatherCodeMapper.ToCondition(forecast.Hourly.WeatherCode[i]))).ToList();
+            WeatherCodeMapper.ToCondition(forecast.Hourly.WeatherCode[i]),
+            forecast.Hourly.PrecipitationChance[i])).ToList();
 
         var daily = Enumerable.Range(0, forecast.Daily.Time.Count)
             .Select(i => new DailyForecast(
@@ -39,6 +40,7 @@ public class WeatherService(OpenMeteoClient openMeteo)
         var details = new WeatherDetails(
             forecast.Current.RelativeHumidity,
             forecast.Daily.PrecipitationSum[0],
+            forecast.Daily.PrecipitationChance[0],
             Round(forecast.Current.UVIndex),
             Round(forecast.Current.Visibility / 5280), // convert feet to miles
             Round(forecast.Current.DewPoint),

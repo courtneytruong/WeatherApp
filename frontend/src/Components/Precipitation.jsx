@@ -14,6 +14,12 @@ function Precipitation({ details }) {
         <div className="flex flex-col gap-2 items-center justify-between">
           <div className="text-sm font-semibold">Total Precipitation:</div>
           <div className="text-4xl">{item.precipitationToday} in</div>
+          <div className="text-sm font-semibold">Chance of Precipitation:</div>
+          <div className="text-4xl">
+            {item.precipitationChance != null
+              ? `${item.precipitationChance}%`
+              : "--"}
+          </div>
         </div>
       )}
     />

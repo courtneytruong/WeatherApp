@@ -21,6 +21,11 @@ function HourlyForecastContainer({ hourlyForecast }) {
             {conditionIcons(hour.condition)}
             {hour.condition}
           </span>
+          {hour.precipitationChance > 0 && (
+            <span className="text-sm text-cyan-200">
+              {hour.precipitationChance}%
+            </span>
+          )}
         </div>
       )}
     />

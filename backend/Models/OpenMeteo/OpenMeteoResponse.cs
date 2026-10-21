@@ -23,7 +23,8 @@ public record HourlyWeather(
     [property: JsonPropertyName("temperature_2m")] List<double> Temperature,
     [property: JsonPropertyName("apparent_temperature")] List<double> ApparentTemperature,
     [property: JsonPropertyName("weather_code")] List<int> WeatherCode,
-    [property: JsonPropertyName("precipitation_probability")] List<int?> PrecipitationChance
+    [property: JsonPropertyName("precipitation_probability")] List<int?> PrecipitationChance,
+    [property: JsonPropertyName("uv_index")] List<double?> UvIndex
 );
 
 public record DailyWeather(

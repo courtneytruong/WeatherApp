@@ -1,5 +1,7 @@
 using WeatherApp.Api.Infrastructure;
 using WeatherApp.Api.Models;
+using WeatherApp.Api.Models.OpenMeteo;
+
 
 
 namespace WeatherApp.Api.Services;
@@ -37,6 +39,8 @@ public class WeatherService(OpenMeteoClient openMeteo)
             Round(forecast.Daily.LowTemp[0]),
             WeatherCodeMapper.ToCondition(forecast.Current.WeatherCode));
 
+        var (sunProtectionFrom, sunProtectionUntil) = FindSunProtectionWindow(forecast.Hourly);
+
         var details = new WeatherDetails(
             forecast.Current.RelativeHumidity,
             forecast.Daily.PrecipitationSum[0],
@@ -45,10 +49,49 @@ public class WeatherService(OpenMeteoClient openMeteo)
             Round(forecast.Current.Visibility / 5280), // convert feet to miles
             Round(forecast.Current.DewPoint),
             forecast.Daily.Sunrise[0],
-            forecast.Daily.Sunset[0]
+            forecast.Daily.Sunset[0],
+            sunProtectionFrom,
+            sunProtectionUntil
         );
         return new WeatherResponse(current, details, hourly, daily);
     }
     private static int Round(double value) => (int)Math.Round(value, MidpointRounding.AwayFromZero);
+
+    private static (DateTime? From, DateTime? Until) FindSunProtectionWindow(HourlyWeather hourly)
+    {
+        var today = hourly.Time[0].Date;
+
+        // Loop 1: find the first hour today where UV reaches 3+
+        int? fromIndex = null;
+        for (int i = 0; i < hourly.Time.Count; i++)
+        {
+            if (hourly.Time[i].Date != today) break;
+
+            var uv = hourly.UvIndex[i];
+            if (uv is not null && Round(uv.Value) >= 3)
+            {
+                fromIndex = i;
+                break;
+            }
+        }
+
+        if (fromIndex is null) return (null, null);
+
+        var from = hourly.Time[fromIndex.Value];
+
+        // Loop 2: from there, find the first hour where UV drops back below 3
+        for (int i = fromIndex.Value + 1; i < hourly.Time.Count; i++)
+        {
+            if (hourly.Time[i].Date != today) break;
+
+            var uv = hourly.UvIndex[i];
+            if (uv is not null && Round(uv.Value) < 3)
+            {
+                return (from, hourly.Time[i]);
+            }
+        }
+
+        return (from, null);
+    }
 
 }
